@@ -1,0 +1,59 @@
+package com.HospitalManagementSystem.Doctor;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.HospitalManagementSystem.Doctor.Entity.Doctor;
+import com.HospitalManagementSystem.Doctor.Entity.Nurse;
+import com.HospitalManagementSystem.Doctor.Entity.PatientAllocation;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
+@Service
+public class DoctorService {
+
+	@Autowired
+	RestTemplate restTemplate;
+	
+	@Autowired
+	PatientAllocationJPA patientAllocationRepo;
+	
+	
+	DoctInfo setDoctDetails(Doctor doctor)
+	{
+		// set Doctor details
+		DoctInfo doctInfo = new DoctInfo();
+		doctInfo.setDoctor(doctor);
+		
+		// set Patient List
+		List<PatientAllocation> patientsIdList = patientAllocationRepo.findAll().stream().filter(x -> x.getDoctId() == doctor.getDoctId()).collect(Collectors.toList());
+		List<PatientInfo> ans = getPatientInfo(patientsIdList);
+		doctInfo.setListOfPatients(ans);
+		
+		//set Nurse Info
+		Nurse nurse = getNurse(doctor);
+		doctInfo.setAllocatedNurse(nurse);
+		
+		return doctInfo;
+	}
+	
+	@HystrixCommand(fallbackMethod = "getPatientInfo_Fallback")
+	List<PatientInfo> getPatientInfo(List<PatientAllocation> patientsIdList)
+	{
+		return patientsIdList.stream().map(x -> restTemplate.getForObject("http://Patient/patient/" + Integer.toString(x.getPatientId()), PatientInfo.class)).collect(Collectors.toList());
+	}
+	List<PatientInfo> getPatientInfo_Fallback(List<PatientAllocation> patientsIdList)
+	{
+		System.out.println("Patient service down");
+		return new ArrayList<PatientInfo>();
+	}
+	
+	Nurse getNurse(Doctor doctor)
+	{
+		return restTemplate.getForObject("http://Nurse/nurse/" + Integer.toString(doctor.getAllocatedNureseId()) , Nurse.class);
+	}
+}

@@ -1,0 +1,9 @@
+package com.HospitalManagementSystem;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.HospitalManagementSystem.Entity.PatientAllocation;
+
+public interface PatientAllocationJPA extends JpaRepository<PatientAllocation, Integer>{
+
+}

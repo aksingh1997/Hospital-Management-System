@@ -1,0 +1,27 @@
+package com.HospitalManagementSystem.Patient;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+@Service
+public class PatientService {
+
+	@Autowired
+	RestTemplate restTemplate;
+	
+	public Room getRoom(Patient patient)
+	{
+		return restTemplate.getForObject("http://room/room/" + Integer.toString(patient.getRoomId()), Room.class);
+	}
+	
+	public Disease getDisease(Patient patient)
+	{
+		return restTemplate.getForObject("http://disease/disease/" + Integer.toString(patient.getDiseaseId()), Disease.class);
+	}
+	
+	public String getDoctName(Patient patient)
+	{
+		return restTemplate.getForObject("http://doctor/doctor/name/" + Integer.toString(patient.getDoctId()), String.class);
+	}
+}

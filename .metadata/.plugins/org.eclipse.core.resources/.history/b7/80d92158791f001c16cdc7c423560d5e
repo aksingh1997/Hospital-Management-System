@@ -1,0 +1,5 @@
+package com.HospitalManagementSystem.Patient;
+
+public class PatientService {
+
+}

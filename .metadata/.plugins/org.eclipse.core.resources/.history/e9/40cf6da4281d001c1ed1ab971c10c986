@@ -1,0 +1,66 @@
+package com.HospitalManagementSystem.Patient;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import com.HospitalManagementSystem.Patient.Entity.Disease;
+import com.HospitalManagementSystem.Patient.Entity.Patient;
+
+@RestController
+public class Controller {
+	
+	@Autowired
+	RestTemplate restTemplate;
+	
+	@Autowired
+	PatientJPA patientRepo;
+	
+	@PostMapping("/patient")
+	String setPatientInfo(@RequestBody Patient patient)
+	{
+		patientRepo.save(patient);
+		return "patient info saved";
+	}
+	
+	@GetMapping("/patient/{id}")
+	PatientInfo getPatientInfo(@PathVariable("id") int id)
+	{
+		System.out.println("Getting the request");
+		Patient patient =  patientRepo.findById(id).orElse(new Patient());
+		PatientInfo patientInfo = setPatientDetails(patient);
+		return patientInfo;
+	}
+	
+	PatientInfo setPatientDetails(Patient patient)
+	{
+		PatientInfo patientInfo = new PatientInfo();
+		//patient
+		patientInfo.setPatient(patient);
+		
+		//room
+		Room room = restTemplate.getForObject("http://room/room/" + Integer.toString(patient.roomId), Room.class);
+		patientInfo.setRoom(room);
+		
+		//bill
+		int room_rent = restTemplate.getForObject("http://room/room/" + Integer.toString(patient.roomId), Room.class).getChargePerDay();
+		int costToCure = restTemplate.getForObject("http://disease/disease/" + Integer.toString(patient.diseaseId), Disease.class).getCostToCure();
+		int bill = costToCure + patient.noOfDaysStayed * room_rent;
+		patientInfo.setBill(bill);
+		
+		//Doctor's name
+		String doctName = restTemplate.getForObject("http://doctor/doctor/name/" + Integer.toString(patient.DoctId), String.class);
+		patientInfo.setDoctName(doctName);
+		
+		//disease
+		Disease disease = restTemplate.getForObject("http://disease/disease/" + Integer.toString(patient.diseaseId), Disease.class);
+		patientInfo.setDisease(disease);
+		
+		return patientInfo;
+		
+	}
+}

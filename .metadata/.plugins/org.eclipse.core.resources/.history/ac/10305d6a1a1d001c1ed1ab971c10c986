@@ -1,0 +1,7 @@
+package com.HospitalManagementSystem.Entity;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface DoctorJPA extends JpaRepository<Doctor, Integer>{
+
+}

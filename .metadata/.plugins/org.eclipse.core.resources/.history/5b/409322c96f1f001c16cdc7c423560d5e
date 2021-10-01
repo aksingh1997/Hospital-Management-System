@@ -1,0 +1,21 @@
+package com.HospitalManagementSystem.demo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.HospitalManagementSystem.Entity.Disease;
+
+@Service
+public class ABC{
+	
+	@Autowired
+	RestTemplate restTemplate;
+	
+	public Disease fun()
+	{
+		Disease disease = restTemplate.getForObject("http://disease/disease/1", Disease.class);
+		return disease;
+	}
+	
+}

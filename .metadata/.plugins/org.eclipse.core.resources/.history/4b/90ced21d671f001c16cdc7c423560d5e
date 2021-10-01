@@ -1,0 +1,33 @@
+package com.HospitalManagementSystem.demo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import com.HospitalManagementSystem.Entity.Disease;
+
+@RestController
+public class Controller {
+
+	@Autowired
+	RestTemplate restTemplate;
+	
+	@Autowired
+	ABC abc;
+	
+	Disease gotIt()
+	{
+		Disease disease = restTemplate.getForObject("http://disease/disease/1", Disease.class);
+		return disease;
+	}
+	
+	@GetMapping("/")
+	Disease getHello()
+	{
+		//return this.gotIt();
+		return abc.fun();
+	}
+	
+	
+}

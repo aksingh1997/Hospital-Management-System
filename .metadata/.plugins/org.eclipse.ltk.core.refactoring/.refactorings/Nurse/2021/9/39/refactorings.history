@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;Nurse.java&apos; to &apos;Doctor/src/main/java/com.HospitalManagementSystem.Doctor.Entity&apos;&#x0D;&#x0A;- Original project: &apos;Nurse&apos;&#x0D;&#x0A;- Destination element: &apos;Doctor/src/main/java/com.HospitalManagementSystem.Doctor.Entity&apos;&#x0D;&#x0A;- Original element: &apos;com.HospitalManagementSystem.Nurse.Nurse.java&apos;" description="Copy compilation unit" destination="=Doctor/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.HospitalManagementSystem.Doctor.Entity" element1="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.HospitalManagementSystem.Nurse{Nurse.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1632484658466" units="1" version="1.0"/>
+</session>

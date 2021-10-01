@@ -1,0 +1,37 @@
+package com.HospitalManagementSystem.Doctor;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.HospitalManagementSystem.Doctor.Entity.Doctor;
+import com.HospitalManagementSystem.Doctor.Entity.Nurse;
+import com.HospitalManagementSystem.Doctor.Entity.PatientAllocation;
+
+@Service
+public class DoctorService {
+
+	@Autowired
+	RestTemplate restTemplate;
+	
+	DoctInfo setDoctDetails(Doctor doctor)
+	{
+		// set Doctor details
+		DoctInfo doctInfo = new DoctInfo();
+		doctInfo.setDoctor(doctor);
+		
+		// set Patient List
+		List<PatientAllocation> patientsIdList = patientAllocationRepo.findAll().stream().filter(x -> x.getDoctId() == doctor.getDoctId()).collect(Collectors.toList());
+		List<PatientInfo> ans = patientsIdList.stream().map(x -> restTemplate.getForObject("http://Patient/patient/" + Integer.toString(x.getPatientId()), PatientInfo.class)).collect(Collectors.toList());
+		doctInfo.setListOfPatients(ans);
+		
+		//set Nurse Info
+		Nurse nurse = restTemplate.getForObject("http://Nurse/nurse/" + Integer.toString(doctor.getAllocatedNureseId()) , Nurse.class);
+		doctInfo.setAllocatedNurse(nurse);
+		
+		return doctInfo;
+	}
+}

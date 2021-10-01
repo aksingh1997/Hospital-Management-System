@@ -1,0 +1,33 @@
+package com.HospitalManagementSystem.Doctor;
+
+import java.util.List;
+
+import com.HospitalManagementSystem.Entity.Doctor;
+import com.HospitalManagementSystem.Entity.PatientInfo;
+
+
+
+public class DoctInfo {
+	
+	Doctor doctor;
+	List<PatientInfo> patient;
+
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
+
+	public List<PatientInfo> getPatient() {
+		return patient;
+	}
+
+	public void setPatient(List<PatientInfo> patient) {
+		this.patient = patient;
+	}
+	
+	
+	
+}

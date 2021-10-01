@@ -1,0 +1,9 @@
+package com.HospitalManagementSystem.Room;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.HospitalManagementSystem.Room.Entity.Room;
+
+public interface RoomJPA extends JpaRepository<Room, Integer>{
+
+}

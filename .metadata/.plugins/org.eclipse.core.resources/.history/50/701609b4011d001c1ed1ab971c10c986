@@ -1,0 +1,40 @@
+package com.HospitalManagementSystem.Doctor;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.client.RestTemplate;
+
+
+
+public class DoctInfo {
+	
+	Doctor doctor;
+	List<Patient> patient;
+
+	@Autowired
+	PatientAllocationJPA patientAllocationRepo;
+	
+	@Autowired
+	RestTemplate restTemplate;
+
+	public Doctor getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(Doctor doctor) {
+		this.doctor = doctor;
+	}
+
+	public List<Patient> getPatient() {
+		return patient;
+	}
+
+	public void setPatient(List<Patient> patient) {
+		this.patient = patient;
+	}
+	
+	
+	
+}
